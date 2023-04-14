@@ -2,9 +2,9 @@ import os
 import unittest
 from unittest.mock import patch
 
-from tutor.exceptions import TutorError
-from tutor.plugins import indexes
-from tutor.types import Config
+from urfu.exceptions import UrfuError
+from urfu.plugins import indexes
+from urfu.types import Config
 
 
 class PluginIndexesTest(unittest.TestCase):
@@ -28,10 +28,10 @@ class PluginIndexesTest(unittest.TestCase):
         # Valid, empty index
         self.assertEqual([], indexes.parse_index("[]"))
         # Invalid index, list expected
-        with self.assertRaises(TutorError):
+        with self.assertRaises(UrfuError):
             self.assertEqual([], indexes.parse_index("{}"))
         # Invalid, empty index
-        with self.assertRaises(TutorError):
+        with self.assertRaises(UrfuError):
             self.assertEqual([], indexes.parse_index("["))
         # Partially valid index
         with patch.object(indexes.fmt, "echo"):

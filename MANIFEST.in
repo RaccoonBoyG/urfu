@@ -1,4 +1,4 @@
 include requirements/base.in
 include requirements/plugins.txt
-recursive-include tutor/templates *
-include tutor/py.typed
+recursive-include urfu/templates *
+include urfu/py.typed

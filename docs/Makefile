@@ -14,4 +14,4 @@ watch: build browse
 	while true; do $(MAKE) wait-for-change build || true; done
 
 wait-for-change:
-	inotifywait -e modify $(shell find . -name "*.rst") ../*.rst ../tutor/hooks/*.py conf.py
+	inotifywait -e modify $(shell find . -name "*.rst") ../*.rst ../urfu/hooks/*.py conf.py

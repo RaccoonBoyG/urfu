@@ -7,9 +7,9 @@ from unittest.mock import patch
 
 from click.exceptions import ClickException
 
-from tutor import hooks
-from tutor.commands import compose
-from tutor.commands.local import LocalContext
+from urfu import hooks
+from urfu.commands import compose
+from urfu.commands.local import LocalContext
 
 
 class ComposeTests(unittest.TestCase):

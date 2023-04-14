@@ -1,0 +1,30 @@
+version: "{{ DOCKER_COMPOSE_VERSION }}"
+services:
+
+    mysql-job:
+      image: {{ DOCKER_IMAGE_MYSQL }}
+      depends_on: {{ [("mysql", RUN_MYSQL)]|list_if }}
+
+    lms-job:
+      image: {{ DOCKER_IMAGE_OPENEDX }}
+      environment:
+        SERVICE_VARIANT: lms
+        DJANGO_SETTINGS_MODULE: lms.envs.urfu.production
+      volumes:
+        - ../apps/openedx/settings/lms:/openedx/edx-platform/lms/envs/urfu:ro
+        - ../apps/openedx/settings/cms:/openedx/edx-platform/cms/envs/urfu:ro
+        - ../apps/openedx/config:/openedx/config:ro
+      depends_on: {{ [("mysql", RUN_MYSQL), ("mongodb", RUN_MONGODB)]|list_if }}
+
+    cms-job:
+      image: {{ DOCKER_IMAGE_OPENEDX }}
+      environment:
+        SERVICE_VARIANT: cms
+        DJANGO_SETTINGS_MODULE: cms.envs.urfu.production
+      volumes:
+        - ../apps/openedx/settings/lms:/openedx/edx-platform/lms/envs/urfu:ro
+        - ../apps/openedx/settings/cms:/openedx/edx-platform/cms/envs/urfu:ro
+        - ../apps/openedx/config:/openedx/config:ro
+      depends_on: {{ [("mysql", RUN_MYSQL), ("mongodb", RUN_MONGODB), ("elasticsearch", RUN_ELASTICSEARCH), ("redis", RUN_REDIS)]|list_if }}
+
+    {{ patch("local-docker-compose-jobs-services")|indent(4) }}

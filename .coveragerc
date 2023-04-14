@@ -2,7 +2,7 @@
 [run]
 branch = True
 source =
-    ./tutor 
+    ./urfu 
     ./bin 
 omit =
     */templates/*

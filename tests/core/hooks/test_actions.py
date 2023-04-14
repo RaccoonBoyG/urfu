@@ -1,7 +1,7 @@
 import typing as t
 import unittest
 
-from tutor.core.hooks import actions, contexts
+from urfu.core.hooks import actions, contexts
 
 
 class PluginActionsTests(unittest.TestCase):

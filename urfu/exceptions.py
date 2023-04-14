@@ -1,0 +1,2 @@
+class UrfuError(Exception):
+    pass

@@ -1,6 +1,6 @@
 import unittest
 
-from tutor.__about__ import __version__
+from urfu.__about__ import __version__
 
 from .base import TestCommandMixin
 

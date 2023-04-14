@@ -18,7 +18,7 @@ jobs:
       matrix:
         include:
           # https://github.com/actions/runner-images#available-images
-          # It's important that we build the tutor binaries with the *oldest* possible
+          # It's important that we build the urfu binaries with the *oldest* possible
           # OS releases and Python version. See these docs for more information:
           # https://pyinstaller.org/en/stable/usage.html#making-gnu-linux-apps-forward-compatible
           - os: ubuntu-20.04
@@ -65,8 +65,8 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Upload release asset to GitHub
         run: |
-          export FILENAME="tutor-$(uname -s)_$(uname -m)"
-          mv ./dist/tutor $FILENAME
+          export FILENAME="urfu-$(uname -s)_$(uname -m)"
+          mv ./dist/urfu $FILENAME
           ${{ env.gh_bin }} release upload --clobber ${{ github.ref_name }} $FILENAME
         env:
           GH_TOKEN: ${{ github.token }}

@@ -1,9 +1,9 @@
 from unittest.mock import Mock, patch
 
 from tests.helpers import PluginsTestCase, temporary_root
-from tutor import images, plugins
-from tutor.__about__ import __version__
-from tutor.commands.images import ImageNotFoundError
+from urfu import images, plugins
+from urfu.__about__ import __version__
+from urfu.commands.images import ImageNotFoundError
 
 from .base import TestCommandMixin
 

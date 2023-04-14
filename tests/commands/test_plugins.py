@@ -2,8 +2,8 @@ import typing as t
 import unittest
 from unittest.mock import Mock, patch
 
-from tutor import plugins
-from tutor.commands import plugins as plugins_commands
+from urfu import plugins
+from urfu.commands import plugins as plugins_commands
 
 from .base import TestCommandMixin
 

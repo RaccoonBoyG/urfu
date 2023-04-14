@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-from tutor import hooks
-from tutor.commands.cli import main
-from tutor.plugins.v0 import OfficialPlugin
+from urfu import hooks
+from urfu.commands.cli import main
+from urfu.plugins.v0 import OfficialPlugin
 
 
 @hooks.Actions.CORE_READY.add()

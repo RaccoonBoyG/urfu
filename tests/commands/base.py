@@ -3,7 +3,7 @@ from __future__ import annotations
 import click.testing
 
 from tests.helpers import TestContext, temporary_root
-from tutor.commands.cli import cli
+from urfu.commands.cli import cli
 
 
 class TestCommandMixin:
@@ -29,9 +29,9 @@ class TestCommandMixin:
         """
         runner = click.testing.CliRunner(
             env={
-                "TUTOR_ROOT": root,
-                "TUTOR_IGNORE_ENTRYPOINT_PLUGINS": "1",
-                "TUTOR_IGNORE_DICT_PLUGINS": "1",
+                "URFU_ROOT": root,
+                "URFU_IGNORE_ENTRYPOINT_PLUGINS": "1",
+                "URFU_IGNORE_DICT_PLUGINS": "1",
             },
             mix_stderr=False,
         )

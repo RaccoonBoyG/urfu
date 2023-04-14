@@ -3,6 +3,8 @@
 TODO
 __pycache__
 *.egg-info/
+.vscode
+.idea
 
 /build/
 /dist/

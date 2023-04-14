@@ -1,11 +1,11 @@
 # change version ranges when upgrading from olive
 tutor-android>=15.0.0,<16.0.0
 tutor-discovery>=15.0.0,<16.0.0
-tutor-ecommerce>=15.0.0,<16.0.0
+# tutor-ecommerce>=15.0.0,<16.0.0
 tutor-forum>=15.0.0,<16.0.0
-tutor-license>=15.0.0,<16.0.0
-tutor-mfe>=15.0.0,<16.0.0
-tutor-minio>=15.0.0,<16.0.0
-tutor-notes>=15.0.0,<16.0.0
-tutor-webui>=15.0.0,<16.0.0
-tutor-xqueue>=15.0.0,<16.0.0
+# tutor-license>=15.0.0,<16.0.0
+urfu-mfe>=15.0.0,<16.0.0
+# tutor-minio>=15.0.0,<16.0.0
+# tutor-notes>=15.0.0,<16.0.0
+# tutor-webui>=15.0.0,<16.0.0
+# tutor-xqueue>=15.0.0,<16.0.0

@@ -5,11 +5,11 @@ from io import StringIO
 from unittest.mock import Mock, patch
 
 from tests.helpers import PluginsTestCase, temporary_root
-from tutor import config as tutor_config
-from tutor import env, exceptions, fmt, plugins
-from tutor.__about__ import __version__
-from tutor.plugins.v0 import DictPlugin
-from tutor.types import Config
+from urfu import config as urfu_config
+from urfu import env, exceptions, fmt, plugins
+from urfu.__about__ import __version__
+from urfu.plugins.v0 import DictPlugin
+from urfu.types import Config
 
 
 class EnvTests(PluginsTestCase):
@@ -75,13 +75,13 @@ class EnvTests(PluginsTestCase):
         )
 
     def test_render_str_missing_configuration(self) -> None:
-        self.assertRaises(exceptions.TutorError, env.render_str, {}, "hello {{ name }}")
+        self.assertRaises(exceptions.UrfuError, env.render_str, {}, "hello {{ name }}")
 
     def test_render_file(self) -> None:
         config: Config = {}
-        tutor_config.update_with_base(config)
-        tutor_config.update_with_defaults(config)
-        tutor_config.render_full(config)
+        urfu_config.update_with_base(config)
+        urfu_config.update_with_defaults(config)
+        urfu_config.render_full(config)
 
         config["MYSQL_ROOT_PASSWORD"] = "testpassword"
         rendered = env.render_file(config, "jobs", "init", "mysql.sh")
@@ -90,12 +90,12 @@ class EnvTests(PluginsTestCase):
     @patch.object(fmt, "echo")
     def test_render_file_missing_configuration(self, _: Mock) -> None:
         self.assertRaises(
-            exceptions.TutorError, env.render_file, {}, "local", "docker-compose.yml"
+            exceptions.UrfuError, env.render_file, {}, "local", "docker-compose.yml"
         )
 
     def test_save_full(self) -> None:
         with temporary_root() as root:
-            config = tutor_config.load_full(root)
+            config = urfu_config.load_full(root)
             with patch.object(fmt, "STDOUT"):
                 env.save(root, config)
             self.assertTrue(
@@ -106,7 +106,7 @@ class EnvTests(PluginsTestCase):
 
     def test_save_full_with_https(self) -> None:
         with temporary_root() as root:
-            config = tutor_config.load_full(root)
+            config = urfu_config.load_full(root)
             config["ENABLE_HTTPS"] = True
             with patch.object(fmt, "STDOUT"):
                 env.save(root, config)
@@ -156,10 +156,10 @@ class EnvTests(PluginsTestCase):
             # Render templates
             with temporary_root() as root:
                 # Create configuration
-                config: Config = tutor_config.load_full(root)
+                config: Config = urfu_config.load_full(root)
                 config["ID"] = "Hector Rumblethorpe"
                 plugins.load("plugin1")
-                tutor_config.save_enabled_plugins(config)
+                urfu_config.save_enabled_plugins(config)
 
                 # Render environment
                 with patch.object(fmt, "STDOUT"):
@@ -270,7 +270,7 @@ class PatchRendererTests(unittest.TestCase):
         self.render.current_template = "current_template"
         return super().setUp()
 
-    @patch("tutor.env.Renderer.render_template")
+    @patch("urfu.env.Renderer.render_template")
     def test_render_template(self, render_template_mock: Mock) -> None:
         """Test that render_template changes the current template and
         calls once render_template from Renderer with the current template."""
@@ -279,7 +279,7 @@ class PatchRendererTests(unittest.TestCase):
         self.assertEqual(self.render.current_template, "new_template")
         render_template_mock.assert_called_once_with("new_template")
 
-    @patch("tutor.env.Renderer.patch")
+    @patch("urfu.env.Renderer.patch")
     def test_patch_with_first_patch(self, patch_mock: Mock) -> None:
         """Test that patch is called from Renderer and adds patches_locations
         when we didn't have that patch."""
@@ -304,7 +304,7 @@ class PatchRendererTests(unittest.TestCase):
             {"first_patch": ["template_1", "current_template"]},
         )
 
-    @patch("tutor.env.plugins.iter_patches")
+    @patch("urfu.env.plugins.iter_patches")
     def test_patch_with_custom_patch_in_a_plugin_patch(
         self, iter_patches_mock: Mock
     ) -> None:
@@ -313,7 +313,7 @@ class PatchRendererTests(unittest.TestCase):
         - When first_patch is in a plugin patches and has a 'custom_patch',
         the patches_locations will reflect that 'custom_patch' is from
         first_patch location.
-        - If in tutor-mfe/tutormfe/patches/caddyfile you add a custom patch
+        - If in urfu-mfe/urfumfe/patches/caddyfile you add a custom patch
         inside the caddyfile patch, the patches_locations will reflect that.
 
         Expected behavior:
@@ -339,7 +339,7 @@ class PatchRendererTests(unittest.TestCase):
             },
         )
 
-    @patch("tutor.env.plugins.iter_patches")
+    @patch("urfu.env.plugins.iter_patches")
     def test_patch_with_processed_patch_in_a_plugin_patch(
         self, iter_patches_mock: Mock
     ) -> None:
@@ -364,8 +364,8 @@ class PatchRendererTests(unittest.TestCase):
             },
         )
 
-    @patch("tutor.env.Renderer.iter_templates_in")
-    @patch("tutor.env.PatchRenderer.render_template")
+    @patch("urfu.env.Renderer.iter_templates_in")
+    @patch("urfu.env.PatchRenderer.render_template")
     def test_render_all(
         self, render_template_mock: Mock, iter_templates_in_mock: Mock
     ) -> None:
@@ -379,7 +379,7 @@ class PatchRendererTests(unittest.TestCase):
         render_template_mock.assert_has_calls(calls)
 
     @patch("sys.stdout", new_callable=StringIO)
-    @patch("tutor.env.PatchRenderer.render_all")
+    @patch("urfu.env.PatchRenderer.render_all")
     def test_print_patches_locations(
         self, render_all_mock: Mock, stdout_mock: Mock
     ) -> None:

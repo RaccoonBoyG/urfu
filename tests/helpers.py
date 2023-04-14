@@ -4,11 +4,11 @@ import typing as t
 import unittest
 import unittest.result
 
-from tutor import hooks
-from tutor.commands.context import BaseTaskContext
-from tutor.core.hooks.contexts import enter as enter_context
-from tutor.tasks import BaseTaskRunner
-from tutor.types import Config
+from urfu import hooks
+from urfu.commands.context import BaseTaskContext
+from urfu.core.hooks.contexts import enter as enter_context
+from urfu.tasks import BaseTaskRunner
+from urfu.types import Config
 
 
 class TestTaskRunner(BaseTaskRunner):
@@ -31,10 +31,10 @@ def temporary_root() -> "tempfile.TemporaryDirectory[str]":
     This function can be used as follows:
 
         with temporary_root() as root:
-            config = tutor_config.load_full(root)
+            config = urfu_config.load_full(root)
             ...
     """
-    return tempfile.TemporaryDirectory(prefix="tutor-test-root-")
+    return tempfile.TemporaryDirectory(prefix="urfu-test-root-")
 
 
 class TestContext(BaseTaskContext):

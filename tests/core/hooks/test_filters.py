@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing as t
 import unittest
 
-from tutor.core.hooks import contexts, filters
+from urfu.core.hooks import contexts, filters
 
 
 class PluginFiltersTests(unittest.TestCase):

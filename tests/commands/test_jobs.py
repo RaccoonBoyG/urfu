@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from tests.helpers import PluginsTestCase, temporary_root
-from tutor.commands import jobs
+from urfu.commands import jobs
 
 from .base import TestCommandMixin
 
@@ -31,7 +31,7 @@ class JobsTests(PluginsTestCase, TestCommandMixin):
     def test_import_demo_course(self) -> None:
         with temporary_root() as root:
             self.invoke_in_root(root, ["config", "save"])
-            with patch("tutor.utils.docker_compose") as mock_docker_compose:
+            with patch("urfu.utils.docker_compose") as mock_docker_compose:
                 result = self.invoke_in_root(root, ["local", "do", "importdemocourse"])
                 dc_args, _dc_kwargs = mock_docker_compose.call_args
         self.assertIsNone(result.exception)
@@ -44,7 +44,7 @@ class JobsTests(PluginsTestCase, TestCommandMixin):
     def test_set_theme(self) -> None:
         with temporary_root() as root:
             self.invoke_in_root(root, ["config", "save"])
-            with patch("tutor.utils.docker_compose") as mock_docker_compose:
+            with patch("urfu.utils.docker_compose") as mock_docker_compose:
                 result = self.invoke_in_root(
                     root,
                     [

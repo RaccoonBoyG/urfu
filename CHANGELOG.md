@@ -4,7 +4,7 @@ This file includes a history of past releases. Changes that were not yet added t
 
 <!--
 ⚠️ DO NOT ADD YOUR CHANGES TO THIS FILE! (unless you want to modify existing changelog entries in this file)
-Changelog entries are managed by scriv. After you have made some changes to Tutor, create a changelog entry with:
+Changelog entries are managed by scriv. After you have made some changes to urfu, create a changelog entry with:
 
     make changelog-entry
 
@@ -29,12 +29,12 @@ instructions, because git commits are used to generate release notes:
 ## v15.3.3 (2023-03-22)
 
 - [Improvement] Make it possible to extend or override the configuration of the uWSGI server. (by @MoisesGSalas)
-- [Improvement] Running `tutor dev launch --mount=edx-platform` now performs all necessary setup for a local edx-platform development. This includes running setup.py, installing node modules, and building assets; previously, those steps had to be run explicitly after bind-mounting a local copy of edx-platform (by @kdmccormick).
-- [Bugfix] Running jobs in development mode with `tutor dev do ...` will now correctly use the development image. Previously, it used the production image, just like `tutor local do ...`. (by @kdmccormick)
+- [Improvement] Running `urfu dev launch --mount=edx-platform` now performs all necessary setup for a local edx-platform development. This includes running setup.py, installing node modules, and building assets; previously, those steps had to be run explicitly after bind-mounting a local copy of edx-platform (by @kdmccormick).
+- [Bugfix] Running jobs in development mode with `urfu dev do ...` will now correctly use the development image. Previously, it used the production image, just like `urfu local do ...`. (by @kdmccormick)
 - [Improvement] Faster build with `npm clean-install` instead of `npm install` in the openedx Docker image. This may change the version of npm packages installed next to edx-platform. (by @regisb)
 - [Feature] Introduce the `DOCKER_BUILD_COMMAND` filter which makes it possible to customize the `docker build` command. (by @regisb)
 - [Improvement] During openedx image build, copy `dockerize` utility from Docker registry for better efficiency. (by @regisb)
-- [Improvement] Better highlight enabled plugins in `tutor plugins list`. (by @regisb)
+- [Improvement] Better highlight enabled plugins in `urfu plugins list`. (by @regisb)
 
 - [Bugfix] Make sure that v0 plugin patches are applied in the same order as plugins are listed. (by @regisb)
 
@@ -42,7 +42,7 @@ instructions, because git commits are used to generate release notes:
 ## v15.3.2 (2023-03-13)
 
 - [Bugfix] Use supported YouTube API for transcripts imports. (by @mariajgrimaldi)
-- [Feature] Add `tutor config patches list` CLI for listing available patches. (by @mafermazu)
+- [Feature] Add `urfu config patches list` CLI for listing available patches. (by @mafermazu)
 - [Bugfix] Add the missing `UWSGI_WORKERS` env variables to the lms and cms k8s deployments. (by @MoisesGSalas)
 
 <a id='changelog-15.3.1'></a>
@@ -53,16 +53,16 @@ instructions, because git commits are used to generate release notes:
 <a id='changelog-15.3.0'></a>
 ## v15.3.0 (2023-02-10)
 
-- [Feature] Introduce plugin indexes, described in this [Tutor enhancement proposal](https://discuss.openedx.org/t/tutor-enhancement-proposal-tep-plugin-indices/8182). This new feature introduces a lot of new ``plugins`` commands. See the docs for more information. (by @regisb)
+- [Feature] Introduce plugin indexes, described in this [urfu enhancement proposal](https://discuss.openedx.org/t/urfu-enhancement-proposal-tep-plugin-indices/8182). This new feature introduces a lot of new ``plugins`` commands. See the docs for more information. (by @regisb)
 - [Improvement] Add the `plugins list --enabled` option. (by @regisb)
 - 💥[Improvement] Modify the output of `plugins list`. Enabled plugins are indicated as "enabled". Installed but not enabled plugins are no longer indicated as "disabled" but as "installed".
 
-- 💥[Feature] Simplify the hooks API. The modules `tutor.hooks.actions`, `tutor.hooks.filters`, and `tutor.hooks.contexts` are no longer part of the API. This change should not affect most developers, who only use the `Actions` and `Filters` classes (notice the plural) from `tutor.hooks`. (by @regisb)
-    - Instead of `tutor.hooks.actions.get("some:action")`, use `tutor.hooks.Actions.SOME_ACTION`.
-    - Instead of `tutor.hooks.filters.get("some:filter")`, use `tutor.hooks.Filters.SOME_FILTER`.
-    - Instead of `tutor.hooks.actions.add("some:action")`, use `tutor.hooks.Actions.SOME_ACTION.add()`. The same applies to the `do` method.
-    - Instead of `tutor.hooks.filters.add("some:filter")`, use `tutor.hooks.Filters.SOME_FILTER.add()`. The same applies to the `add_item`, `add_items`, `apply`, and `iterate` methods.
-    - Instead of `tutor.hooks.contexts.enter`, use `tutor.core.hooks.contexts.enter`.
+- 💥[Feature] Simplify the hooks API. The modules `urfu.hooks.actions`, `urfu.hooks.filters`, and `urfu.hooks.contexts` are no longer part of the API. This change should not affect most developers, who only use the `Actions` and `Filters` classes (notice the plural) from `urfu.hooks`. (by @regisb)
+    - Instead of `urfu.hooks.actions.get("some:action")`, use `urfu.hooks.Actions.SOME_ACTION`.
+    - Instead of `urfu.hooks.filters.get("some:filter")`, use `urfu.hooks.Filters.SOME_FILTER`.
+    - Instead of `urfu.hooks.actions.add("some:action")`, use `urfu.hooks.Actions.SOME_ACTION.add()`. The same applies to the `do` method.
+    - Instead of `urfu.hooks.filters.add("some:filter")`, use `urfu.hooks.Filters.SOME_FILTER.add()`. The same applies to the `add_item`, `add_items`, `apply`, and `iterate` methods.
+    - Instead of `urfu.hooks.contexts.enter`, use `urfu.core.hooks.contexts.enter`.
 
 - [Improvement] Make it possible to override the max upload size in the LMS and the CMS. This is achieved by moving the "caddyfile-lms" and "caddyfile-cms" patches just before the `import proxy` declarations. We also wrap the `request_body` directives within `handle` statements, which means that the `max_body` sizes can be overridden for specific paths. (by @regisb)
 
@@ -74,7 +74,7 @@ instructions, because git commits are used to generate release notes:
 ## v15.2.0 (2023-01-19)
 
 - 💥[Bugfix] Fix "example.com" links in registration emails. This is a breaking change for platforms that have modified the "id" field of the LMS site object in the database. These platforms should set `SITE_ID=1` in the common settings via a plugin. (by @regisb)
-- [Bugfix] Running `tutor k8s upgrade --from=maple` won't apply and won't wait for the MySQL deployment to be ready if `RUN_MYSQL: false` (When you host your MySQL somewhere else like RDS) (by @CodeWithEmad)
+- [Bugfix] Running `urfu k8s upgrade --from=maple` won't apply and won't wait for the MySQL deployment to be ready if `RUN_MYSQL: false` (When you host your MySQL somewhere else like RDS) (by @CodeWithEmad)
 - [Bugfix] Fix HTML component editing in studio by cherry-picking [upstream fix](https://github.com/openedx/edx-platform/pull/31500). (by @regisb)
 - [Improvement] Changes annotations from `typing` to use built-in generic types from `__future__.annotations` (by @Carlos-Muniz)
 - [Improvement] Resolve `CORS_ORIGIN_WHITELIST` warnings that pollute the LMS and CMS logs. As far as we know they were not causing any issue, apart from being a nuisance. (by @regisb)
@@ -83,12 +83,12 @@ instructions, because git commits are used to generate release notes:
 ## v15.1.0 (2022-12-13)
 
 - [Improvement] Upgrade ipdb and ipython packages in the openedx development image. (by @regisb)
-- [Improvement] Skip unnecessary image building in development. This should make `tutor dev launch` slightly faster. (by @regisb)
+- [Improvement] Skip unnecessary image building in development. This should make `urfu dev launch` slightly faster. (by @regisb)
 - [Bugfix] Fix Authn MFE login in development by disabling enterprise integration. (by @regisb)
-- [Bugfix] Fix "Invalid value for ‘--from’" when running `tutor local upgrade --from=nutmeg`. If you are facing this error, just run `tutor local launch` and your platform should be automatically upgraded.
-- [Bugfix] Fix "TypeError: Parameters to Generic[...] must all be type variables" error. This error may occur when upgrading from a very old installation of Tutor. It is due to an old version of the typing-extensions package.
+- [Bugfix] Fix "Invalid value for ‘--from’" when running `urfu local upgrade --from=nutmeg`. If you are facing this error, just run `urfu local launch` and your platform should be automatically upgraded.
+- [Bugfix] Fix "TypeError: Parameters to Generic[...] must all be type variables" error. This error may occur when upgrading from a very old installation of urfu. It is due to an old version of the typing-extensions package.
 - 💥[Deprecation] Get rid of the `quickstart` command. v15.0.0 introduced a deprecation warning, but we actually want users to stop using this command. Instead, use `launch` (by @regisb).
-- [Improvement] Backfill persistent grades during upgrade from Nutmeg. If you observe missing grades after the upgrade from Nutmeg, run `tutor local upgrade --from=nutmeg`. (by @regisb)
+- [Improvement] Backfill persistent grades during upgrade from Nutmeg. If you observe missing grades after the upgrade from Nutmeg, run `urfu local upgrade --from=nutmeg`. (by @regisb)
 
 <a id='changelog-15.0.0'></a>
 ## v15.0.0 (2022-12-06)
@@ -98,13 +98,13 @@ instructions, because git commits are used to generate release notes:
 - [Bugfix] Update problem templates according newer python versions. (by @mariajgrimaldi)
 - [Improvement] Add the `-h` help option to all commands and subcommands. Previously, we could only use `--help`, which is quite long for lazy fingers. (by @regisb)
 - 💥[Feature] Add an extensible `local/dev/k8s do ...` command to trigger custom job commands. These commands are used to run a series of bash scripts in designated containers. Any plugin can add custom jobs thanks to the `CLI_DO_COMMANDS` filter. This causes the following breaking changes:
-    - The "init", "createuser", "settheme", "importdemocourse" commands were all migrated to this new interface. For instance, `tutor local init` was replaced by `tutor local do init`.
+    - The "init", "createuser", "settheme", "importdemocourse" commands were all migrated to this new interface. For instance, `urfu local init` was replaced by `urfu local do init`.
     - Plugin developers are encouraged to replace calls to the `COMMANDS_INIT` and `COMMANDS_PRE_INIT` filters by `CLI_DO_INIT_TASKS`.
 - [Feature] Implement hook filter priorities, which work like action priorities. (by @regisb)
 - 💥[Improvement] Remove the `local/dev bindmount` commands, which have been marked as deprecated for some time. The `--mount` option should be used instead.
 - 💥[Bugfix] Fix local installation requirements. Plugins that implemented the "openedx-dockerfile-post-python-requirements" patch and that needed access to the edx-platform repo will no longer work. Instead, these plugins should implement the "openedx-dockerfile-pre-assets" patch. This scenario should be very rare, though. (by @regisb)
-- 💥[Improvement] Rename the implementation of tutor <mode> quickstart to tutor <mode> launch. (by @Carlos-Muniz)
-- 💥[Improvement] Remove the implementation of tutor dev runserver. (by @Carlos-Muniz)
+- 💥[Improvement] Rename the implementation of urfu <mode> quickstart to urfu <mode> launch. (by @Carlos-Muniz)
+- 💥[Improvement] Remove the implementation of urfu dev runserver. (by @Carlos-Muniz)
 - [Bugfix] Fix MongoDB replica set connection error resulting from edx-platform's pymongo (3.10.1 -> 3.12.3) upgrade ([edx-platform#30569](https://github.com/openedx/edx-platform/pull/30569)). (by @ormsbee)
 - [Bugfix] Update ``celery`` invocations for lms-worker and cms-worker to be compatible with Celery 5 CLI.
 - [Improvement] Point CMS at its config file using ``CMS_CFG`` environment variable instead of deprecated ``STUDIO_CFG``.
@@ -121,7 +121,7 @@ instructions, because git commits are used to generate release notes:
 
 - [Feature] Add support for MongoDB SSL, authentication source, mechanism and replica set via the `MONGODB_USE_SSL`, `MONGODB_AUTH_MECHANISM`, `MONGODB_AUTH_SOURCE`, `MONGODB_REPLICA_SET` settings. (by @zakum1 and @regisb)
 
-- [Bugfix] Fix tag of "openedx" development Docker image. Previously, this Docker tag did not include the Tutor version. As a consequence, a different cached image could be used in some cases. For instance: when running `tutor dev run` commands. Now, the image tag is "openedx-dev:TUTOR_VERSION".
+- [Bugfix] Fix tag of "openedx" development Docker image. Previously, this Docker tag did not include the urfu version. As a consequence, a different cached image could be used in some cases. For instance: when running `urfu dev run` commands. Now, the image tag is "openedx-dev:urfu_VERSION".
 
 - [Bugfix] Fix name of Swahili locale: it is "sw-ke" and not "sw" (by @regisb).
 
@@ -131,7 +131,7 @@ instructions, because git commits are used to generate release notes:
 ## v14.2.1 (2022-11-24)
 
 - [Improvement] Auto-completion of `plugins` and `config` arguments: `plugins enable/disable NAME`, `plugins install PATH`, `config save --set KEY=VAL`, `config save --unset KEY`, `config printvalue KEY`. (by @regisb)
-- [Bugfix] Fix minimum click version (>= 8.0.0) when installing tutor from pip.
+- [Bugfix] Fix minimum click version (>= 8.0.0) when installing urfu from pip.
 - [Improvement] Enable CORS by default for both LMS and CMS by moving those settings to the `common_all` partial. (by @arbrandes)
 
 ## v14.2.0 (2022-11-21)
@@ -145,14 +145,14 @@ instructions, because git commits are used to generate release notes:
 
 ## v14.1.1 (2022-10-25)
 
-- [Deprecation] Tutor is no longer compatible with Python 3.6. (by @regisb)
+- [Deprecation] urfu is no longer compatible with Python 3.6. (by @regisb)
 - [Security] Fix xblock ajax handler vulnerability. (by @regisb)
 - [Improvement] Use web proxy gzip encoding to improve bandwidth. We observe a 75% size reduction on the LMS dashboard. (by @ghassanmas)
 
 ## v14.1.0 (2022-10-10)
 
 - [Improvement] Upgrade Scorm XBlock to v14.0.0. (by @regisb)
-- 💥[Improvement] The Richie plugin was transferred to the Openfun organization; thus, it is no longer officially supported and it is removed from the default set of plugins that ships with `pip install tutor[full]` or the Tutor pre-compiled binary. Users are encouraged to uninstall the `tutor-richie` Python package and install the `tutor-contrib-richie` package instead.
+- 💥[Improvement] The Richie plugin was transferred to the Openfun organization; thus, it is no longer officially supported and it is removed from the default set of plugins that ships with `pip install urfu[full]` or the urfu pre-compiled binary. Users are encouraged to uninstall the `urfu-richie` Python package and install the `urfu-contrib-richie` package instead.
 - [Feature] Upgrade edx-platform i18n strings to nutmeg.2. (by @regisb)
 
 ## v14.0.5 (2022-08-29)
@@ -162,11 +162,11 @@ instructions, because git commits are used to generate release notes:
 
 ## v14.0.4 (2022-07-29)
 
-- [Feature] Add the `-m/--mount` option to `tutor dev quickstart`. (by @regisb)
-- [Bugfix] Fix `tutor dev start -m /path/to/frontend-app-learning` by introducing dev-specific `COMPOSE_DEV_TMP` and `COMPOSE_DEV_JOBS_TMP` filters (by @regisb).
-- [Bugfix] Log the shell commands that Tutor executes more accurately. (by @kdmccormick)
-- [Bugfix] `tutor dev quickstart` would fail under certain versions of docker-compose due to a bug in the logic that handled volume mounting. (by @kdmccormick)
-- [Bugfix] The `tutor k8s start` command will succeed even when `k8s-override` and `kustomization-patches-strategic-merge` are not specified. (by @edazzocaisser)
+- [Feature] Add the `-m/--mount` option to `urfu dev quickstart`. (by @regisb)
+- [Bugfix] Fix `urfu dev start -m /path/to/frontend-app-learning` by introducing dev-specific `COMPOSE_DEV_TMP` and `COMPOSE_DEV_JOBS_TMP` filters (by @regisb).
+- [Bugfix] Log the shell commands that urfu executes more accurately. (by @kdmccormick)
+- [Bugfix] `urfu dev quickstart` would fail under certain versions of docker-compose due to a bug in the logic that handled volume mounting. (by @kdmccormick)
+- [Bugfix] The `urfu k8s start` command will succeed even when `k8s-override` and `kustomization-patches-strategic-merge` are not specified. (by @edazzocaisser)
 - [BugFix] `kubectl wait` checks deployments instead of pods as it could hang indefinitely if there are extra pods in a broken state. (by @keithgg)
 
 ## v14.0.3 (2022-07-09)
@@ -182,11 +182,11 @@ instructions, because git commits are used to generate release notes:
 - [Bugfix] Fix smtp server port in `cms.yml` which was causing email sending failures in the Studio. (by @regisb)
 - [Bugfix] Skip waiting for MongoDB if it is served using SRV records. (by @gabor-boros)
 - [Improvement] Use `git am` instead of `cherry-pick` to simplify patching process.
-- [Improvement] Tutor is now compatible with Docker Compose subcommand.
+- [Improvement] urfu is now compatible with Docker Compose subcommand.
 
 ## v14.0.1 (2022-06-13)
 
-- [Bugfix] Fix missing tables on migration from maple ([#689](https://github.com/overhangio/tutor/issues/689)). (by @ibrmora)
+- [Bugfix] Fix missing tables on migration from maple ([#689](https://github.com/overhangio/urfu/issues/689)). (by @ibrmora)
 - [Bugfix] Fix plugin patches in cms.env.yml template.
 
 ## v14.0.0 (2022-06-09)
@@ -196,7 +196,7 @@ instructions, because git commits are used to generate release notes:
   - 💥[Improvement] The `lms.env.json` and `cms.env.json` files are moved to `lms.env.yml` and `cms.env.yml`. As a consequence, plugin developers must reformat the following patches to use YAML format, and not JSON: "common-env-features", "lms-env-features", "cms-env-features", "lms-env", "cms-env", "openedx-auth".
   - 💥[Feature] Persistent grades are now enabled by default.
   - [Bugfix] Remove edX references from bulk emails ([issue](https://github.com/openedx/build-test-release-wg/issues/100)).
-  - [Improvement] For Tutor Nightly (and only Nightly), official plugins are now installed from their nightly branches on GitHub instead of a version range on PyPI. This will allow Nightly users to install all official plugins by running ``pip install -e ".[full]"``.
+  - [Improvement] For urfu Nightly (and only Nightly), official plugins are now installed from their nightly branches on GitHub instead of a version range on PyPI. This will allow Nightly users to install all official plugins by running ``pip install -e ".[full]"``.
   - [Bugfix] Start MongoDB when running migrations, because a new data migration fails if MongoDB is not running
 
 ## v13.3.1 (2022-06-06)
@@ -208,7 +208,7 @@ instructions, because git commits are used to generate release notes:
 
 - [Security] Apply logout redirect url security fix. (by @regisb)
 - [Feature] Make it possible to force the rendering of a given template, even when the template path matches an ignore pattern. (by @regisb)
-- 💥[Bugfix] Get rid of the `tutor config render` command, which is useless now that themes can be implemented as plugins. (by @regisb)
+- 💥[Bugfix] Get rid of the `urfu config render` command, which is useless now that themes can be implemented as plugins. (by @regisb)
 
 ## v13.2.3 (2022-05-30)
 
@@ -234,16 +234,16 @@ instructions, because git commits are used to generate release notes:
 - [Improvement] Add the `COMPOSE_PROJECT_STARTED` action and run `dev stop` on `local start` (and vice versa). (by @regisb)
 - [Feature] Introduce `local/dev copyfrom` command to copy contents from a container. (by @regisb)
 - [Bugfix] Fix a race condition that could prevent a newly provisioned LMS container from starting due to a `FileExistsError` when creating data folders.
-- [Deprecation] Mark `tutor dev runserver` as deprecated in favor of `tutor dev start`. Since `start` now supports bind-mounting and breakpoint debugging, `runserver` is redundant and will be removed in a future release. (by @kdmccormick)
-- [Improvement] Allow breakpoint debugging when attached to a service via `tutor dev start SERVICE`. (by @kdmccormick)
+- [Deprecation] Mark `urfu dev runserver` as deprecated in favor of `urfu dev start`. Since `start` now supports bind-mounting and breakpoint debugging, `runserver` is redundant and will be removed in a future release. (by @kdmccormick)
+- [Improvement] Allow breakpoint debugging when attached to a service via `urfu dev start SERVICE`. (by @kdmccormick)
 - [Security] Apply rate limiting security fix (see [commit](https://github.com/overhangio/edx-platform/commit/b5723e416e628cac4fa84392ca13e1b72817674f)). (by @regisb)
 - [Feature] Introduce the ``-m/--mount`` option in ``local`` and ``dev`` commands to auto-magically bind-mount folders from the host. (by @regisb)
-- [Feature] Add `tutor dev quickstart` command, which is similar to `tutor local quickstart`, except that it uses dev containers instead of local production ones and includes some other small differences for the convience of Open edX developers. This should remove some friction from the Open edX development setup process, which previously required that users provision using local producation containers (`tutor local quickstart`) but then stop them and switch to dev containers (`tutor local stop && tutor dev start -d`). (by @kdmccormick)
-- 💥[Improvement] Make it possible to run `tutor k8s exec <command with multiple arguments>` (#636). As a consequence, it is no longer possible to run quoted commands: `tutor k8s exec "<some command>"`. Instead, you should remove the quotes: `tutor k8s exec <some command>`. (by @regisb)
-- 💥[Deprecation] Drop support for the `TUTOR_EDX_PLATFORM_SETTINGS` environment variable. It is now recommended to create a plugin instead. (by @regisb)
-- 💥[Improvement] Complete overhaul of the plugin extension mechanism. Tutor now has a hook-based Python API: actions can be triggered at different points of the application life cycle and data can be modified thanks to custom filters. The v0 plugin API is still supported, for backward compatibility, but plugin developers are encouraged to migrate their plugins to the new API. See the new plugin tutorial for more information. (by @regisb)
-- [Improvement] Improved the output of `tutor plugins list`. (by @regisb)
-- [Feature] Add `tutor [dev|local|k8s] status` command, which provides basic information about the platform's status. (by @kdmccormick)
+- [Feature] Add `urfu dev quickstart` command, which is similar to `urfu local quickstart`, except that it uses dev containers instead of local production ones and includes some other small differences for the convience of Open edX developers. This should remove some friction from the Open edX development setup process, which previously required that users provision using local producation containers (`urfu local quickstart`) but then stop them and switch to dev containers (`urfu local stop && urfu dev start -d`). (by @kdmccormick)
+- 💥[Improvement] Make it possible to run `urfu k8s exec <command with multiple arguments>` (#636). As a consequence, it is no longer possible to run quoted commands: `urfu k8s exec "<some command>"`. Instead, you should remove the quotes: `urfu k8s exec <some command>`. (by @regisb)
+- 💥[Deprecation] Drop support for the `urfu_EDX_PLATFORM_SETTINGS` environment variable. It is now recommended to create a plugin instead. (by @regisb)
+- 💥[Improvement] Complete overhaul of the plugin extension mechanism. urfu now has a hook-based Python API: actions can be triggered at different points of the application life cycle and data can be modified thanks to custom filters. The v0 plugin API is still supported, for backward compatibility, but plugin developers are encouraged to migrate their plugins to the new API. See the new plugin urfuial for more information. (by @regisb)
+- [Improvement] Improved the output of `urfu plugins list`. (by @regisb)
+- [Feature] Add `urfu [dev|local|k8s] status` command, which provides basic information about the platform's status. (by @kdmccormick)
 
 ## v13.1.11 (2022-04-12)
 
@@ -272,7 +272,7 @@ instructions, because git commits are used to generate release notes:
 
 - [Bugfix] Fix `local/k8s quickstart` commands when upgrading from an older release (#595).
 - [Bugfix] Fix running the default exim-relay SMTP server on arm64 (#600).
-- [Feature] Add `tutor k8s apply` command, which is a direct interface with `kubectl apply`.
+- [Feature] Add `urfu k8s apply` command, which is a direct interface with `kubectl apply`.
 - [Feature] Add `openedx-dockerfile-minimal` patch, which you can use to install custom packages and run commands as root in the Docker image.
 
 ## v13.1.5 (2022-02-14)
@@ -299,15 +299,15 @@ instructions, because git commits are used to generate release notes:
 - [Bugfix] Fix authentication in development due to missing SameSite policy on session ID cookie.
 - [Bugfix] Display properly themed favicon.ico image in LMS, Studio, and microfrontends.
 - [Bugfix] Fix "LazyStaticAbsoluteUrl is not JSON serializable" error when sending bulk emails.
-- [Bugfix] Fix `tutor local importdemocourse` fails when the platform is not up.
+- [Bugfix] Fix `urfu local importdemocourse` fails when the platform is not up.
 
 ## v13.1.0 (2022-01-08)
 
 - [Improvement] Provide much more comprehensive instructions when upgrading.
 - [Bugfix] During the upgrade, make sure that the environment is up-to-date before prompting to rebuild the custom images.
 - [Bugfix] Fix ownership of MySQL data, in particular when upgrading a Kubernetes cluster to Maple.
-- [Bugfix] Ensure that ``tutor k8s upgrade`` is run during ``tutor k8s quickstart``, when necessary.
-- 💥[Bugfix] By default, detect the current version during ``tutor k8s/local upgrade``.
+- [Bugfix] Ensure that ``urfu k8s upgrade`` is run during ``urfu k8s quickstart``, when necessary.
+- 💥[Bugfix] By default, detect the current version during ``urfu k8s/local upgrade``.
 - [Bugfix] Fix upgrading from Lilac to Maple on Kubernetes by deleting deployments and services.
 
 ## v13.0.3 (2022-01-04)
@@ -321,31 +321,31 @@ instructions, because git commits are used to generate release notes:
 
 ## v13.0.1 (2021-12-20)
 
-- [Bugfix] Missing requirements file in `pip install tutor[full]`.
+- [Bugfix] Missing requirements file in `pip install urfu[full]`.
 
 ## v13.0.0 (2021-12-20)
 
 - 💥[Improvement] Upgrade to Maple
-  - Install all official plugins as part of the `tutor[full]` package.
+  - Install all official plugins as part of the `urfu[full]` package.
   - Don't print error messages about loading plugins during autocompletion.
   - Prompt for image building when upgrading from one release to the next.
   - 💥 Allow concurrent logins to the LMS and the CMS.
-  - Add `tutor local start --skip-build` option to skip building Docker images.
+  - Add `urfu local start --skip-build` option to skip building Docker images.
 - [Feature] Better support of Caddy as a load balancer in Kubernetes:
-  - Make it possible to start/stop a selection of resources with ``tutor k8s start/stop [names...]``.
+  - Make it possible to start/stop a selection of resources with ``urfu k8s start/stop [names...]``.
   - Make it easy to deploy an independent LoadBalancer by converting the caddy service to a ClusterIP when ``ENABLE_WEB_PROXY=false``.
   - Add a ``app.kubernetes.io/component: loadbalancer`` label to the LoadBalancer service.
   - Add ``app.kubernetes.io/name`` labels to all services.
-  - Preserve the LoadBalancer service in ``tutor k8s stop`` commands.
+  - Preserve the LoadBalancer service in ``urfu k8s stop`` commands.
   - Wait for the caddy deployment to be ready before running initialisation jobs.
   - Fix running Caddy container in k8s, which should always be the case even if `ENABLE_WEB_PROXY` is false.
 - [Security] On Kubernetes, convert all NodePort services to ClusterIP to guarantee network isolation from outside the cluster.
-- 💥[Improvement] Move the Open edX forum to a [dedicated plugin](https://github.com/overhangio/tutor-forum/) (#450).
+- 💥[Improvement] Move the Open edX forum to a [dedicated plugin](https://github.com/overhangio/urfu-forum/) (#450).
 - 💥[Improvement] Drop Python 3.5 compatibility.
-- 💥[Bugfix] No longer track the Tutor version number in resource labels (and label selectors, which breaks the update of Deployment resources), but instead do so in resource annotations.
-- 💥[Improvement] Get rid of the "tutor-openedx" package, which is no longer supported.
+- 💥[Bugfix] No longer track the urfu version number in resource labels (and label selectors, which breaks the update of Deployment resources), but instead do so in resource annotations.
+- 💥[Improvement] Get rid of the "urfu-openedx" package, which is no longer supported.
 - 💥[Improvement] Run all services as unprivileged containers, for better security. This has multiple consequences:
-  - The "openedx-dev" image is now built with `tutor dev dc build lms`.
+  - The "openedx-dev" image is now built with `urfu dev dc build lms`.
   - The "smtp" service now runs the "devture/exim-relay" Docker image, which is unprivileged. Also, the default SMTP port is now 8025.
 - 💥[Feature] Get rid of the Nginx container and service, which is now replaced by Caddy. this has the following consequences:
     - Patches "nginx-cms", "nginx-lms", "nginx-extra", "local-docker-compose-nginx-aliases" are replaced by "caddyfile-cms", "caddyfile-lms", "caddyfile", " local-docker-compose-caddy-aliases".
@@ -364,16 +364,16 @@ instructions, because git commits are used to generate release notes:
 ## v12.1.7 (2021-11-18)
 
 - [Security] Timed exam security fix [29347](https://github.com/openedx/edx-platform/pull/29347).
-- [Feature] Add [tutor-richie](https://github.com/overhangio/tutor-richie) to the plugins that are bundled with the tutor binary.
-- [Improvement] Make `tutor plugins list` print plugins sorted by name.
+- [Feature] Add [urfu-richie](https://github.com/overhangio/urfu-richie) to the plugins that are bundled with the urfu binary.
+- [Improvement] Make `urfu plugins list` print plugins sorted by name.
 - [Improvement] Ignore Python plugins that cannot be loaded.
-- [Bugfix] When configured with `RUN_FORUM: false`, omit forum-related [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/) from the manifests that `tutor k8s` generates. (#525)
+- [Bugfix] When configured with `RUN_FORUM: false`, omit forum-related [Jobs](https://kubernetes.io/docs/concepts/workloads/controllers/job/) from the manifests that `urfu k8s` generates. (#525)
 
 ## v12.1.6 (2021-11-02)
 
 - [Improvement] Upgrade all services to open-release/lilac.3.
 - [Feature] Make it possible to override job configuration in development: if they exist, `dev/docker-compose.jobs.yml` and `dev/docker-compose.jobs.override.yml` will be loaded when running jobs.
-- [Improvement] Faster `tutor local start` by building only necessary images.
+- [Improvement] Faster `urfu local start` by building only necessary images.
 
 ## v12.1.5 (2021-10-25)
 
@@ -389,7 +389,7 @@ instructions, because git commits are used to generate release notes:
 
 - [Bugfix] Fix 500 error during user registration.
 - [Bugfix] Fix Mongodb compatibility version upgrade when upgrading from Koa to Lilac.
-- [Feature] Ability to pass [docker build options](https://docs.docker.com/engine/reference/commandline/build/#options) via ``--docker-arg`` option in ``tutor images build`` command.
+- [Feature] Ability to pass [docker build options](https://docs.docker.com/engine/reference/commandline/build/#options) via ``--docker-arg`` option in ``urfu images build`` command.
 
 ## v12.1.2 (2021-09-18)
 
@@ -402,7 +402,7 @@ instructions, because git commits are used to generate release notes:
 ## v12.1.0 (2021-09-17)
 
 - [Improvement] Make it easier to run edx-platform unit tests.
-- [Bugfix] Fix segmentation fault during `tutor config save` on Mac OS M1 (#473). Thanks @ghassanmas!
+- [Bugfix] Fix segmentation fault during `urfu config save` on Mac OS M1 (#473). Thanks @ghassanmas!
 - [Bugfix] Fix a bug that prevented connecting to external MongoDB instances.
 - [Improvement] Make sure that the logo included in email notifications (including discussion responses) is the same as the site logo.
 - [Bugfix] Install IPython directly from PyPI instead of installing it from source (the reason it was installed from source is no longer relevant). The effect of this shall speed up the process of building the openedx-dev Docker image.
@@ -425,21 +425,21 @@ instructions, because git commits are used to generate release notes:
 
 - [Bugfix] Fix "Invalid command argument" during upgrade from Koa to Lilac.
 - [Bugfix] Fix MySQL initialisation in docker-compose==2.0.0beta4.
-- [Improvement] Tutor is now published on PyPI as "tutor".
+- [Improvement] urfu is now published on PyPI as "urfu".
 
 ## v12.0.1 (2021-06-22)
 
 - [Bugfix] Fix double pulling MongoDB image when upgrading from Koa to Lilac.
 - [Improvement] Better logging during `plugins disable`.
 - [Bugfix] Fix "upstream sent too big header" error during login of existing users after a Koa to Lilac upgrade.
-- [Feature] Added the ability to skip `config.yml` file modification while running `tutor config save` command with `-e` or `--env-only` flag.
+- [Feature] Added the ability to skip `config.yml` file modification while running `urfu config save` command with `-e` or `--env-only` flag.
 - [Feature] Add new config value `FORUM_MONGODB_DATABASE` to set the forum database name.
 
 ## v12.0.0 (2021-06-09)
 
 - 💥[Improvement] Upgrade all services to open-release/lilac.master.
-- 💥[Feature] Migrate Android app building and the WebUI frontend away from core Tutor and to dedicated plugins (see [TEP](https://discuss.overhang.io/c/community/tep/9)). The `DOCKER_IMAGE_ANDROID` setting is thus renamed to `ANDROID_DOCKER_IMAGE`.
-- [Feature] Run `docker-compose build` as part of `tutor local start`.
+- 💥[Feature] Migrate Android app building and the WebUI frontend away from core urfu and to dedicated plugins (see [TEP](https://discuss.overhang.io/c/community/tep/9)). The `DOCKER_IMAGE_ANDROID` setting is thus renamed to `ANDROID_DOCKER_IMAGE`.
+- [Feature] Run `docker-compose build` as part of `urfu local start`.
 
 ## v11.3.1 (2021-06-08)
 
@@ -475,7 +475,7 @@ instructions, because git commits are used to generate release notes:
 
 - [Security] Apply security patch [27394](https://github.com/openedx/edx-platform/pull/27394).
 - [Feature] Add patches to extend python requirements installation process in openedx and openedx-dev Dockerfiles.
-- [Improvement] Apply edx-platform patches during Docker image build using tutor patch 'openedx-dockerfile-git-patches-default'.
+- [Improvement] Apply edx-platform patches during Docker image build using urfu patch 'openedx-dockerfile-git-patches-default'.
 
 ## v11.2.6 (2021-04-09)
 
@@ -491,7 +491,7 @@ instructions, because git commits are used to generate release notes:
 
 - [Bugfix] Fix "Invalid Request" error during SAML authentication (thanks @Ant1x!).
 - [Feature] Add `make pull-base-images` command to update base images.
-- [Improvement] Annotate types all over the Tutor code base.
+- [Improvement] Annotate types all over the urfu code base.
 - [Bugfix] Fix parsing of YAML CLI arguments that include equal "=" signs.
 - [Bugfix] Fix minor edge case in `long_to_base64` utility function.
 - [Improvement] Add openedx patches to add settings during the build process.
@@ -531,14 +531,14 @@ instructions, because git commits are used to generate release notes:
 
 ## v11.1.1 (2021-01-20)
 
-- [Feature] Add a `tutor images build --target=...` argument for [multi-stage Docker builds](https://docs.docker.com/develop/develop-images/multistage-build/).
+- [Feature] Add a `urfu images build --target=...` argument for [multi-stage Docker builds](https://docs.docker.com/develop/develop-images/multistage-build/).
 - [Feature] Create a test version of the openedx-dev Docker image for running edx-platform unit tests.
 - [Security] Apply security patch [26112](https://github.com/openedx/edx-platform/pull/26112).
 - [Bugfix] Fix `local exec` command which crashed with a `AttributeError`.
 
 ## v11.1.0 (2021-01-13)
 
-- [Bugfix] Fix "Read-only file system" errors when running `tutor dev runserver` commands on Mac OS (again, see #392).
+- [Bugfix] Fix "Read-only file system" errors when running `urfu dev runserver` commands on Mac OS (again, see #392).
 - [Feature] Automatically bind-mount volumes from the `volumes/` directory with the `--volume=/...` syntax.
 
 ## v11.0.7 (2021-01-11)
@@ -555,7 +555,7 @@ instructions, because git commits are used to generate release notes:
 
 ## v11.0.4 (2020-12-17)
 
-- [Bugfix] Fix "Read-only file system" errors when running `tutor dev runserver` commands on Mac OS (#392).
+- [Bugfix] Fix "Read-only file system" errors when running `urfu dev runserver` commands on Mac OS (#392).
 
 ## v11.0.3 (2020-12-15)
 
@@ -588,7 +588,7 @@ instructions, because git commits are used to generate release notes:
         - Replace Memcached and RabbitMQ with Redis.
     - Additional features:
         - Make it possible to disable all plugins at once with ``plugins disable all``.
-        - Add ``tutor k8s wait`` command to wait for a pod to become ready.
+        - Add ``urfu k8s wait`` command to wait for a pod to become ready.
         - Faster, more reliable static assets with local memory caching.
     - Deprecation: proxy files for Apache and Nginx are no longer provided out of the box.
     - Removed plugin `{{ patch (...) }}` statements:
@@ -613,13 +613,13 @@ instructions, because git commits are used to generate release notes:
 - 💥[Improvement] Remove `dev/local pullimages`. Instead, run `dev/local dc pull`.
 - 💥[Improvement] Add `dev dc` and `local dc` commands as thin wrappers of the `docker-compose` CLI.
 - 💥[Improvement] Remove the undocumented `local run_hook` command. Instead, run `local init --limit=...`.
-- 💥[Improvement] Remove `tutor android pullimage` command. Instead, run `tutor images pull android`.
+- 💥[Improvement] Remove `urfu android pullimage` command. Instead, run `urfu images pull android`.
 - [Bugfix] Fix `config save` on Windows.
 - [Bugfix] Fix platform checking in user ID function.
 
 ## v10.4.1 (2020-11-11)
 
-- [Bugfix] Fix dependency error during `pip install tutor` due to urllib3 incompatibility.
+- [Bugfix] Fix dependency error during `pip install urfu` due to urllib3 incompatibility.
 - [Bugfix] Fix user ID checking under Windows.
 - [Bugfix] Fix template rendering for Windows users.
 - [Improvement] Switch to `bcrypt` for htpasswd password generation, for better portability on Windows.
@@ -627,9 +627,9 @@ instructions, because git commits are used to generate release notes:
 
 ## v10.4.0 (2020-10-30)
 
-**Note for users of the [Tutor AMI](https://aws.amazon.com/marketplace/pp/B07PV3TB8X):** To upgrade from a previous v10 release, run:
+**Note for users of the [urfu AMI](https://aws.amazon.com/marketplace/pp/B07PV3TB8X):** To upgrade from a previous v10 release, run:
 
-    curl -fsSL https://overhang.io/tutor/ami/upgrade.sh | sh
+    curl -fsSL https://overhang.io/urfu/ami/upgrade.sh | sh
 
 - [Improvement] Mount config and setting files in read-only mode.
 - 💥[Improvement] Enable unit completion tracking by default.
@@ -725,7 +725,7 @@ instructions, because git commits are used to generate release notes:
 
 ## v10.0.4 (2020-06-19)
 
-- [Bugfix] Fix broken `tutor ui` command in binary.
+- [Bugfix] Fix broken `urfu ui` command in binary.
 
 ## v10.0.3 (2020-06-19)
 
@@ -817,10 +817,10 @@ instructions, because git commits are used to generate release notes:
 
 - [Bugfix] Fix "Unable to resolve dependency" error during forum initialisation.
 - [Feature] Add `settheme` command to easily assign a theme to a domain name.
-- [Improvement] Modify Nginx access logs to include request scheme and server name (plugin developers should use the "tutor" log format).
+- [Improvement] Modify Nginx access logs to include request scheme and server name (plugin developers should use the "urfu" log format).
 - [Bugfix] Fix DNS resolution of restarted service.
 - [Feature] Restart multiple services with `local restart`.
-- [Feature] Make it possible to easily reload the openedx gunicorn process with `tutor local exec lms reload-gunicorn`.
+- [Feature] Make it possible to easily reload the openedx gunicorn process with `urfu local exec lms reload-gunicorn`.
 - [Improvement] Rename lms/cms_worker to lms/cms-worker in local deployment.
 - [Improvement] Add the management plugin to the RabbitMQ container.
 - [Improvement] Make it possible to run an Elasticsearch service on HTTPS.
@@ -863,7 +863,7 @@ instructions, because git commits are used to generate release notes:
 - [Bugfix] Fix OAuth authentication in dev mode.
 - [Improvement] Upgrade to the 3.7 docker-compose syntax.
 - [Improvement] The `dev runserver` command can now be run for just any service.
-- 💥[Feature] `dev run/exec` commands now support generic options which are passed to docker-compose. Consequently, defining the `TUTOR_EDX_PLATFORM_PATH` environment variable no longer works. Instead, users are encouraged to explicitly pass the `-v` option, define a command alias or create a `docker-compose.override.yml` file.
+- 💥[Feature] `dev run/exec` commands now support generic options which are passed to docker-compose. Consequently, defining the `urfu_EDX_PLATFORM_PATH` environment variable no longer works. Instead, users are encouraged to explicitly pass the `-v` option, define a command alias or create a `docker-compose.override.yml` file.
 
 ## 3.9.1 (2020-01-08)
 
@@ -908,7 +908,7 @@ instructions, because git commits are used to generate release notes:
 
 ## 3.7.1 (2019-10-06)
 
-- [Feature] Introduce tutor docker image.
+- [Feature] Introduce urfu docker image.
 - [Feature] Introduce `local hook` command for plugin development.
 - [Bugfix] Persist `private.txt` file between two runs of `config save` (#247).
 - [Improvement] Added configuration values to limit the number of gunicorn workers for the LMS and CMS.
@@ -922,7 +922,7 @@ instructions, because git commits are used to generate release notes:
 ## 3.6.3 (2019-08-31)
 
 - [Security] Fix CustomTagModule mako template injection.
-- [Improvement] Move all plugins outside of the tutor repo.
+- [Improvement] Move all plugins outside of the urfu repo.
 - [Bugfix/Improvement] Add all plugins (with data) into binary bundle (#242).
 
 ## 3.6.2 (2019-08-07)
@@ -981,7 +981,7 @@ instructions, because git commits are used to generate release notes:
 - [Feature] Creation of a plugin system.
 - [Feature] Kubernetes support out of beta.
 - [Improvement] Switch to pinned image tags for easier upgrades.
-- 💥[Improvement] Remove the `-y/--yes` option: `tutor config save` is now non-interactive by default. Use `-i/--interactive` to force interactive mode.
+- 💥[Improvement] Remove the `-y/--yes` option: `urfu config save` is now non-interactive by default. Use `-i/--interactive` to force interactive mode.
 - 💥[Improvement] Replace the `databases` command with `init`.
 - [Improvement] Upgrade to ironwood.2.
 - [Improvement] Add `-y/--yes` option to `local quickstart` for non-interactive quickstart.
@@ -1027,7 +1027,7 @@ instructions, because git commits are used to generate release notes:
 
 ## 3.3.3 (2019-03-29)
 
-- [Bugfix] Fix `pip install tutor-openedx`.
+- [Bugfix] Fix `pip install urfu-openedx`.
 
 ## 3.3.2 (2019-03-27)
 
@@ -1111,15 +1111,15 @@ instructions, because git commits are used to generate release notes:
 
 - [Bugfix] fix MySQL initialisation (#159, #160).
 - [Improvement] Better handling of continuous integration.
-- [Bugfix] fix `tutor --version` (#156).
+- [Bugfix] fix `urfu --version` (#156).
 - [Improvement] Absolute settings imports -- 📯 thanks @tonytan4ever!.
 
 ## 3.0.0 (2019-02-09)
 
-- [Improvement] Complete rewrite of Tutor: switch from a make-based project to a single binary that runs all commands.
-- [Feature] An web user interface can be created with `tutor webui start`.
+- [Improvement] Complete rewrite of urfu: switch from a make-based project to a single binary that runs all commands.
+- [Feature] An web user interface can be created with `urfu webui start`.
 - [Bugfix] Add missing Elasticsearch to Kubernetes deployment (#147).
-- [Improvement] Upload `tutor-openedx` to PyPI .
+- [Improvement] Upload `urfu-openedx` to PyPI .
 
 ## Older changes
 

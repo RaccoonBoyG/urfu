@@ -10,7 +10,7 @@ import docutils.parsers.rst
 
 # -- Project information -----------------------------------------------------
 
-project = "Tutor"
+project = "Urfu"
 copyright = ""  # pylint: disable=redefined-builtin
 author = "Overhang.IO"
 
@@ -57,11 +57,11 @@ nitpick_ignore = [
 # Resolve type aliases here
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autodoc_type_aliases
 autodoc_type_aliases: dict[str, str] = {
-    "T1": "tutor.core.hooks.filters.T1",
-    "L": "tutor.core.hooks.filters.L",
+    "T1": "urfu.core.hooks.filters.T1",
+    "L": "urfu.core.hooks.filters.L",
     # python 3.10
-    "T": "tutor.core.hooks.actions.T",
-    "T2": "tutor.core.hooks.filters.T2",
+    "T": "urfu.core.hooks.actions.T",
+    "T2": "urfu.core.hooks.filters.T2",
 }
 
 
@@ -70,7 +70,7 @@ autodoc_type_aliases: dict[str, str] = {
 extensions.append("sphinx_click")
 # This is to avoid the addition of the local username to the docs
 os.environ["HOME"] = "~"
-# Make sure that sphinx-click can find the tutor module
+# Make sure that sphinx-click can find the urfu module
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 # -- Options for HTML output -------------------------------------------------
@@ -82,20 +82,20 @@ html_theme_options = {
 html_context = {
     "display_github": True,
     "github_user": "overhangio",
-    "github_repo": "tutor",
+    "github_repo": "urfu",
     "github_version": "master",
     "conf_py_path": "/docs/",
 }
 html_static_path = ["img"]
 
 # Custom settings
-html_logo = "./img/tutor-logo.png"
+html_logo = "./img/urfu-logo.png"
 html_favicon = "./img/favicon.png"
 html_show_sourcelink = False
 html_display_github = True
 html_show_sphinx = False
 html_github_user = "overhangio"
-html_github_repo = "tutor"
+html_github_repo = "urfu"
 # Images do not link to themselves
 html_scaled_image_link = False
 html_show_copyright = False
@@ -104,12 +104,12 @@ html_show_copyright = False
 here = os.path.abspath(os.path.dirname(__file__))
 about: Dict[str, str] = {}
 with io.open(
-    os.path.join(here, "..", "tutor", "__about__.py"), "rt", encoding="utf-8"
+    os.path.join(here, "..", "urfu", "__about__.py"), "rt", encoding="utf-8"
 ) as f:
     # pylint: disable=exec-used
     exec(f.read(), about)
 rst_prolog = f"""
-.. |tutor_version| replace:: {about["__version__"]}
+.. |urfu_version| replace:: {about["__version__"]}
 """
 
 
@@ -145,9 +145,9 @@ def youtube(
     ]
 
 
-# Tutor's own extension
+# Urfu's own extension
 sys.path.append(os.path.join(os.path.dirname(__file__), "_ext"))
-extensions.append("tutordocs")
+extensions.append("urfudocs")
 
 
 setattr(youtube, "content", True)

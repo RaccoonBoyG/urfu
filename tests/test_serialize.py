@@ -1,6 +1,6 @@
 import unittest
 
-from tutor import serialize
+from urfu import serialize
 
 
 class SerializeTests(unittest.TestCase):
