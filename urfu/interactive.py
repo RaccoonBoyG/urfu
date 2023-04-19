@@ -18,7 +18,7 @@ def ask_questions(config: Config, run_for_prod: Optional[bool] = None) -> None:
     """
     defaults = urfu_config.get_defaults()
     if run_for_prod is None:
-        run_for_prod = config.get("LMS_HOST") != "local.urfu.online"
+        run_for_prod = config.get("LMS_HOST") != "local.lektorium.tv"
         run_for_prod = click.confirm(
             fmt.question(
                 "Are you configuring a production platform? "
@@ -29,8 +29,8 @@ def ask_questions(config: Config, run_for_prod: Optional[bool] = None) -> None:
         )
     if not run_for_prod:
         dev_values: Config = {
-            "LMS_HOST": "local.urfu.online",
-            "CMS_HOST": "studio.local.urfu.online",
+            "LMS_HOST": "local.lektorium.tv",
+            "CMS_HOST": "studio.local.lektorium.tv",
             "ENABLE_HTTPS": False,
         }
         fmt.echo_info(
