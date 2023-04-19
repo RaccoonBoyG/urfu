@@ -61,7 +61,7 @@ FROM python as python-requirements
 ENV PATH /openedx/venv/bin:${PATH}
 ENV VIRTUAL_ENV /openedx/venv/
 
-RUN apt update && apt install -y software-properties-common libmysqlclient-dev libxmlsec1-dev libgeos-dev
+RUN apt-get update && apt-get install -y software-properties-common libmysqlclient-dev libxmlsec1-dev libgeos-dev
 
 # Install the right version of pip/setuptools
 # https://pypi.org/project/setuptools/
@@ -112,8 +112,8 @@ RUN npm clean-install --verbose --registry=$NPM_REGISTRY
 FROM minimal as production
 
 # Install system requirements
-RUN apt update && \
-    apt install -y gettext gfortran graphviz graphviz-dev libffi-dev libfreetype6-dev libgeos-dev libjpeg8-dev liblapack-dev libmysqlclient-dev libpng-dev libsqlite3-dev libxmlsec1-dev lynx ntp pkg-config rdfind && \
+RUN apt-get update && \
+    apt-get install -y gettext gfortran graphviz graphviz-dev libffi-dev libfreetype6-dev libgeos-dev libjpeg8-dev liblapack-dev libmysqlclient-dev libpng-dev libsqlite3-dev libxmlsec1-dev lynx ntp pkg-config rdfind && \
     rm -rf /var/lib/apt/lists/*
 
 # From then on, run as unprivileged "app" user
@@ -215,8 +215,8 @@ FROM production as development
 
 # Install useful system requirements (as root)
 USER root
-RUN apt update && \
-    apt install -y vim iputils-ping dnsutils telnet \
+RUN apt-get update && \
+    apt-get install -y vim iputils-ping dnsutils telnet \
     && rm -rf /var/lib/apt/lists/*
 USER app
 
