@@ -3,16 +3,16 @@ FROM docker.io/ubuntu:20.04 as minimal
 LABEL maintainer="Overhang.io <contact@overhang.io>"
 
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && \
-    apt install -y build-essential curl git language-pack-en
+RUN apt-get update && \
+    apt-get install -y build-essential curl git language-pack-en
 ENV LC_ALL en_US.UTF-8
 {{ patch("openedx-dockerfile-minimal") }}
 
 ###### Install python with pyenv in /opt/pyenv and create virtualenv in /openedx/venv
 FROM minimal as python
 # https://github.com/pyenv/pyenv/wiki/Common-build-problems#prerequisites
-RUN apt update && \
-    apt install -y libssl-dev zlib1g-dev libbz2-dev \
+RUN apt-get update && \
+    apt-get install -y libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev \
     xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 ARG PYTHON_VERSION=3.8.12
@@ -29,19 +29,19 @@ RUN mkdir -p /openedx/edx-platform && \
     git clone $EDX_PLATFORM_REPOSITORY --branch $EDX_PLATFORM_VERSION --depth 1 /openedx/edx-platform
 WORKDIR /openedx/edx-platform
 
-# # Identify tutor user to apply patches using git
-# RUN git config --global user.email "tutor@overhang.io" \
-#   && git config --global user.name "Tutor"
+# Identify tutor user to apply patches using git
+RUN git config --global user.email "root@gmail.com" \
+  && git config --global user.name "root"
 
-# {%- if patch("openedx-dockerfile-git-patches-default") %}
-# # Custom edx-platform patches
-# {{ patch("openedx-dockerfile-git-patches-default") }}
-# {%- else %}
-# # Patch edx-platform
-# # Fix broken Circuit Schematic Builder problem template
-# # https://github.com/openedx/edx-platform/pull/31365
-# RUN curl -fsSL https://github.com/openedx/edx-platform/commit/20b93b8b01276edadddfbbb67f15714fddd81c31.patch | git am
-# {%- endif %}
+{%- if patch("openedx-dockerfile-git-patches-default") %}
+# Custom edx-platform patches
+{{ patch("openedx-dockerfile-git-patches-default") }}
+{%- else %}
+# Patch edx-platform
+# Fix broken Circuit Schematic Builder problem template
+# https://github.com/openedx/edx-platform/pull/31365
+RUN curl -fsSL https://github.com/openedx/edx-platform/commit/20b93b8b01276edadddfbbb67f15714fddd81c31.patch | git am
+{%- endif %}
 
 # {# Example: RUN curl -fsSL https://github.com/openedx/edx-platform/commit/<GITSHA1> | git am #}
 {{ patch("openedx-dockerfile-post-git-checkout") }}
