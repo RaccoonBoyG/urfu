@@ -158,11 +158,11 @@ def save(
                 config[key] = []
             values = config[key]
             if not isinstance(values, list):
-                raise exceptions.TutorError(
+                raise exceptions.UrfuError(
                     f"Could not append value to '{key}': current setting is of type '{values.__class__.__name__}', expected list."
                 )
             if not isinstance(value, str):
-                raise exceptions.TutorError(
+                raise exceptions.UrfuError(
                     f"Could not append value to '{key}': appended value is of type '{value.__class__.__name__}', expected str."
                 )
             if value not in values:
@@ -171,7 +171,7 @@ def save(
         for key, value in remove_vars:
             values = config.get(key, [])
             if not isinstance(values, list):
-                raise exceptions.TutorError(
+                raise exceptions.UrfuError(
                     f"Could not remove value from '{key}': current setting is of type '{values.__class__.__name__}', expected list."
                 )
             while value in values:
@@ -200,7 +200,7 @@ def printvalue(context: Context, key: str) -> None:
     try:
         value = config[key]
     except KeyError as e:
-        raise exceptions.TutorError(f"Missing configuration value: {key}") from e
+        raise exceptions.UrfuError(f"Missing configuration value: {key}") from e
     fmt.echo(serialize.str_format(value))
 
 

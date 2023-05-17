@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from tutor import bindmount
+from urfu import bindmount
 
 
 class BindmountTests(unittest.TestCase):
@@ -50,7 +50,7 @@ class BindmountTests(unittest.TestCase):
     def test_parse_implicit(self) -> None:
         # Import module to make sure filter is created
         # pylint: disable=import-outside-toplevel,unused-import
-        import tutor.commands.compose
+        import urfu.commands.compose
 
         self.assertEqual(
             [

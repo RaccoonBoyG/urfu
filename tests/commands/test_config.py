@@ -1,7 +1,7 @@
 import unittest
 
 from tests.helpers import temporary_root
-from tutor import config as tutor_config
+from urfu import config as urfu_config
 
 from .base import TestCommandMixin
 
@@ -65,15 +65,15 @@ class ConfigTests(unittest.TestCase, TestCommandMixin):
             self.invoke_in_root(
                 root, ["config", "save", "--append=TEST=value"], catch_exceptions=False
             )
-            config1 = tutor_config.load(root)
+            config1 = urfu_config.load(root)
             self.invoke_in_root(
                 root, ["config", "save", "--append=TEST=value"], catch_exceptions=False
             )
-            config2 = tutor_config.load(root)
+            config2 = urfu_config.load(root)
             self.invoke_in_root(
                 root, ["config", "save", "--remove=TEST=value"], catch_exceptions=False
             )
-            config3 = tutor_config.load(root)
+            config3 = urfu_config.load(root)
         # Value is appended
         self.assertEqual(["value"], config1["TEST"])
         # Value is not appended a second time

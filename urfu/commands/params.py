@@ -2,9 +2,9 @@ import typing as t
 
 import click
 
-from tutor import config as tutor_config
-from tutor import hooks
-from tutor.types import Config
+from urfu import config as urfu_config
+from urfu import hooks
+from urfu.types import Config
 
 
 class ConfigLoaderParam(click.ParamType):
@@ -25,5 +25,5 @@ class ConfigLoaderParam(click.ParamType):
         if self.root is None:
             return {}
         if self._config is None:
-            self._config = tutor_config.load_full(self.root)
+            self._config = urfu_config.load_full(self.root)
         return self._config

@@ -248,7 +248,7 @@ def check_output(*command: str) -> bytes:
 def warn_macos_docker_memory() -> None:
     try:
         check_macos_docker_memory()
-    except exceptions.TutorError as e:
+    except exceptions.UrfuError as e:
         fmt.echo_alert(
             f"""Could not verify sufficient RAM allocation in Docker:
 

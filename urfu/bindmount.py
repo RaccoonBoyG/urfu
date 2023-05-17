@@ -5,7 +5,7 @@ import re
 import typing as t
 from functools import lru_cache
 
-from tutor import hooks, types
+from urfu import hooks, types
 
 
 def get_mounts(config: types.Config) -> list[str]:
