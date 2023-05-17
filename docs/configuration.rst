@@ -40,8 +40,6 @@ With an up-to-date environment, Tutor is ready to launch an Open edX platform an
 Individual service activation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- ``RUN_LMS`` (default: ``true``)
-- ``RUN_CMS`` (default: ``true``)
 - ``RUN_ELASTICSEARCH`` (default: ``true``)
 - ``RUN_MONGODB`` (default: ``true``)
 - ``RUN_MYSQL`` (default: ``true``)
@@ -67,11 +65,13 @@ This configuration parameter defines the name of the Docker image to run for the
 
 This configuration paramater defines the name of the Docker image to run the development version of the lms and cms containers.  By default, the Docker image tag matches the Tutor version it was built with.
 
+.. https://hub.docker.com/r/devture/exim-relay/tags
+
 - ``DOCKER_IMAGE_CADDY`` (default: ``"docker.io/caddy:2.6.2"``)
 
 This configuration paramater defines which Caddy Docker image to use.
 
-- ``DOCKER_IMAGE_ELASTICSEARCH`` (default: ``"docker.io/elasticsearch:7.10.1"``)
+- ``DOCKER_IMAGE_ELASTICSEARCH`` (default: ``"docker.io/elasticsearch:7.17.9"``)
 
 This configuration parameter defines which Elasticsearch Docker image to use.
 
@@ -79,15 +79,21 @@ This configuration parameter defines which Elasticsearch Docker image to use.
 
 This configuration parameter defines which MongoDB Docker image to use.
 
-- ``DOCKER_IMAGE_MYSQL`` (default: ``"docker.io/mysql:5.7.35"``)
+.. https://hub.docker.com/_/mysql/tags?page=1&name=8.0
+
+- ``DOCKER_IMAGE_MYSQL`` (default: ``"docker.io/mysql:8.0.33"``)
 
 This configuration parameter defines which MySQL Docker image to use.
 
-- ``DOCKER_IMAGE_REDIS`` (default: ``"docker.io/redis:6.2.6"``)
+.. https://hub.docker.com/_/redis/tags
+
+- ``DOCKER_IMAGE_REDIS`` (default: ``"docker.io/redis:7.0.11"``)
 
 This configuration parameter defines which Redis Docker image to use.
 
-- ``DOCKER_IMAGE_SMTP`` (default: ``"docker.io/devture/exim-relay:4.95-r0-2``)
+.. https://hub.docker.com/r/devture/exim-relay/tags
+
+- ``DOCKER_IMAGE_SMTP`` (default: ``"docker.io/devture/exim-relay:4.96-r1-0``)
 
 This configuration parameter defines which Simple Mail Transfer Protocol (SMTP) Docker image to use.
 
@@ -353,18 +359,11 @@ Installing extra xblocks and requirements
 
 Would you like to include custom xblocks, or extra requirements to your Open edX platform? Additional requirements can be added to the ``OPENEDX_EXTRA_PIP_REQUIREMENTS`` parameter in the :ref:`config file <configuration>` or to the ``env/build/openedx/requirements/private.txt`` file. The difference between them, is that ``private.txt`` file, even though it could be used for both, :ref:`should be used for installing extra xblocks or requirements from private repositories <extra_private_xblocks>`. For instance, to include the `polling xblock from Opencraft <https://github.com/open-craft/xblock-poll/>`_:
 
-- add the following to the ``config.yml``::
+    tutor config save --append OPENEDX_EXTRA_PIP_REQUIREMENTS=git+https://github.com/open-craft/xblock-poll.git
 
-    OPENEDX_EXTRA_PIP_REQUIREMENTS:
-    - "git+https://github.com/open-craft/xblock-poll.git"
-
-.. warning::
-   Specifying extra requirements through ``config.yml`` overwrites :ref:`the default extra requirements<openedx_extra_pip_requirements>`. You might need to add them to the list if your configuration depends on them.
-
-- or add the dependency to ``private.txt``::
+Alternatively, add the dependency to ``private.txt``::
 
     echo "git+https://github.com/open-craft/xblock-poll.git" >> "$(tutor config printroot)/env/build/openedx/requirements/private.txt"
-
 
 Then, the ``openedx`` docker image must be rebuilt::
 
