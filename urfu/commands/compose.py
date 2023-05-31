@@ -91,7 +91,7 @@ def launch(
     pullimages: bool,
     skip_build: bool,
 ) -> None:
-    print(context)
+    print(dir(context))
     context_name = context.obj.NAME
     run_for_prod = context_name != "dev"
 
