@@ -163,7 +163,7 @@ The second is implicit::
 
     tutor mounts add /path/to/edx-platform
 
-With the explicit form, the setting means "bind-mount the host folder /path/to/edx-platform to /openedx/edx-platform in the lms container at run time".
+With the explicit form, the value means "bind-mount the host folder /path/to/edx-platform to /openedx/edx-platform in the lms container at run time".
 
 If you use the explicit format, you will quickly realise that you usually want to bind-mount folders in multiple containers at a time. For instance, you will want to bind-mount the edx-platform repository in the "cms" container, but also the "lms-worker" and "cms-worker" containers. To do that, write instead::
 

@@ -378,6 +378,24 @@ class Filters:
     #:   ``os.path.basename(path)``) to conditionally add mounts.
     IMAGES_BUILD_MOUNTS: Filter[list[tuple[str, str]], [str]] = Filter()
 
+    #: List of host directories to be automatically bind-mounted in Docker images at
+    #: build time. For instance, this is useful to build Docker images using a custom
+    #: repository on the host.
+    #:
+    #: This filter works similarly to the :py:data:`COMPOSE_MOUNTS` filter, with a few differences.
+    #:
+    #: :parameter list[tuple[str, str]] mounts: each item is a pair of ``(name, value)``
+    #:   used to generate a build context at build time. See the corresponding `Docker
+    #:   documentation <https://docs.docker.com/engine/reference/commandline/buildx_build/#build-context>`__.
+    #:   The following option will be added to the ``docker buildx build`` command:
+    #:   ``--build-context={name}={value}``. If the Dockerfile contains a "name" stage, then
+    #:   that stage will be replaced by the corresponding directory on the host.
+    #: :parameter str name: full path to the host-mounted folder. As opposed to
+    #:   :py:data:`COMPOSE_MOUNTS`, this is not just the basename, but the full path. When
+    #:   implementing this filter you should check this path (for instance: with
+    #:   ``os.path.basename(path)``) to conditionally add mounts.
+    IMAGES_BUILD_MOUNTS: Filter[list[tuple[str, str]], [str]] = Filter()
+
     #: List of images to be pulled when we run ``urfu images pull ...``.
     #:
     #: :parameter list[tuple[str, str]] tasks: list of ``(name, tag)`` tuples.

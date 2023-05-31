@@ -80,6 +80,22 @@ def mounts_add(context: click.Context, mounts: list[str]) -> None:
 
     The bind-mounted folder will be added to the project configuration, in the ``MOUNTS``
     setting.
+
+    Values passed to this command can take one of two forms. The first is explicit::
+
+        tutor mounts add myservice:/host/path:/container/path
+
+    The second is implicit::
+
+        tutor mounts add /host/path
+
+    With the explicit form, the value means "bind-mount the host folder /host/path to
+    /container/path in the "myservice" container at run time".
+
+    With the implicit form, plugins are in charge of automatically detecting in which
+    containers and locations the /host/path folder should be bind-mounted. In this case,
+    folders can be bind-mounted at build-time -- which cannot be achieved with the
+    explicit form.
     """
     new_mounts = []
     for mount in mounts:

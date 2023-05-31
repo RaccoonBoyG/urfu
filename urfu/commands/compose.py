@@ -74,6 +74,8 @@ class ComposeTaskRunner(BaseComposeTaskRunner):
 
 
 class BaseComposeContext(BaseTaskContext):
+    NAME: t.Literal["local", "dev"]
+
     def job_runner(self, config: Config) -> ComposeTaskRunner:
         raise NotImplementedError
 
@@ -89,12 +91,16 @@ def launch(
     pullimages: bool,
     skip_build: bool,
 ) -> None:
-    utils.warn_macos_docker_memory()
-    interactive_upgrade(context, not non_interactive)
-    interactive_configuration(context, not non_interactive)
+    context_name = context.obj.NAME
+    run_for_prod = context_name != "dev"
 
-    config = urfu_config.load(context.obj.root)
-    context_name = context.obj.job_runner(config).NAME
+    utils.warn_macos_docker_memory()
+
+    # Upgrade has to run before configuration
+    interactive_upgrade(context, not non_interactive, run_for_prod)
+    interactive_configuration(context, not non_interactive, run_for_prod)
+
+    config = tutor_config.load(context.obj.root)
 
     if not skip_build:
         click.echo(fmt.title("Building Docker images"))
@@ -131,7 +137,9 @@ def launch(
         )
 
 
-def interactive_upgrade(context: click.Context, interactive: bool) -> None:
+def interactive_upgrade(
+    context: click.Context, interactive: bool, run_for_prod: bool
+) -> None:
     """
     Piece of code that is only used in launch.
     """
@@ -159,10 +167,11 @@ Are you sure you want to continue?"""
         )
 
         # Update env and configuration
-        interactive_configuration(context, interactive)
+        # Don't run in interactive mode, otherwise users gets prompted twice.
+        interactive_configuration(context, False, run_for_prod)
 
         # Post upgrade
-        if run_upgrade_from_release and interactive:
+        if interactive:
             question = f"""Your platform is being upgraded from {run_upgrade_from_release.capitalize()}.
 
     If you run custom Docker images, you must rebuild them now by running the following command in a different shell:
@@ -179,11 +188,13 @@ Are you sure you want to continue?"""
             )
 
 
-def interactive_configuration(context: click.Context, interactive: bool) -> None:
+def interactive_configuration(
+    context: click.Context, interactive: bool, run_for_prod: bool
+) -> None:
     click.echo(fmt.title("Interactive platform configuration"))
     config = urfu_config.load_minimal(context.obj.root)
     if interactive:
-        interactive_config.ask_questions(config)
+        interactive_config.ask_questions(config, run_for_prod=run_for_prod)
     urfu_config.save_config_file(context.obj.root, config)
     config = urfu_config.load_full(context.obj.root)
     urfu_env.save(context.obj.root, config)
