@@ -100,7 +100,7 @@ def launch(
     interactive_upgrade(context, not non_interactive, run_for_prod)
     interactive_configuration(context, not non_interactive, run_for_prod)
 
-    config = tutor_config.load(context.obj.root)
+    config = urfu_config.load(context.obj.root)
 
     if not skip_build:
         click.echo(fmt.title("Building Docker images"))
